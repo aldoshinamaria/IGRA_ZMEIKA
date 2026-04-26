@@ -789,6 +789,96 @@ body {
   }
 }
 
+/* --- Встраивание в iframe (портфолио): убрать 100dvh и внутренний скролл у старта/игры --- */
+html.is-embed {
+  height: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+html.is-embed body {
+  min-height: 100%;
+  min-height: -webkit-fill-available;
+}
+
+html.is-embed .app {
+  min-height: 100%;
+  box-sizing: border-box;
+}
+
+@media (min-width: 600px) {
+  html.is-embed body:has(#viewGame:not([hidden])),
+  html.is-embed body:has(#viewStart:not([hidden])) {
+    height: auto;
+    min-height: 100%;
+    max-height: none;
+    overflow: visible;
+  }
+
+  html.is-embed .app:has(#viewStart:not([hidden])),
+  html.is-embed .app:has(#viewGame:not([hidden])) {
+    min-height: 100%;
+    max-height: none;
+    padding: 20px 16px 24px;
+  }
+
+  /* Старт: не фиксировать высоту на внешнее окно — контент вписывается в iframe */
+  html.is-embed .view--start {
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow-y: visible !important;
+    overflow-x: hidden;
+  }
+
+  html.is-embed .view--start .view__inner--start {
+    padding: 20px 12px 28px;
+  }
+
+  /* Чуть плотнее блоки, чтобы чаще влезали без прокрутки */
+  html.is-embed .start-info {
+    padding: 12px 14px 14px;
+    margin-bottom: 1rem;
+  }
+
+  html.is-embed .start-info__section {
+    margin-bottom: 0.75rem;
+  }
+
+  html.is-embed .lede {
+    margin-bottom: 0.75rem;
+  }
+
+  /* Игровой экран: убрать жёсткий 100dvh */
+  html.is-embed .view--game {
+    min-height: 0 !important;
+    max-height: none !important;
+  }
+
+  html.is-embed .view--game .view__inner--game {
+    min-height: 0 !important;
+    max-height: none !important;
+    padding: 12px 10px 20px;
+  }
+
+  /* Клетка: опираемся на размеры iframe, не на окно браузера */
+  html.is-embed .view--game .game-board {
+    --game-side: min(calc(100% - 1rem), min(90vw, 60vmin), 400px) !important;
+  }
+}
+
+@media (max-width: 599px) {
+  html.is-embed .view--start {
+    max-height: none;
+    min-height: 0;
+    overflow: visible;
+  }
+
+  html.is-embed .app {
+    min-height: 100%;
+    padding: 6px 8px calc(6px + var(--safe-bottom));
+  }
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,
